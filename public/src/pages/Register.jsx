@@ -1,15 +1,30 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 import Logo from "../assets/logo.svg"
 
 function Register() {
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        passowrd: "",
+        confirmPassword: "",
+    });
     const handleSubmit =(event)=>{
         event.preventDefault();
         alert("form");
     };
 
-    const handleChange = (event) => {};
+    const handleValidation = ()=>{
+        const {password, confirmPassword, username, email} = values;
+        if (password !== confirmPassword){
+
+        }
+    };
+
+    const handleChange = (event) => {
+        setValues({...values,[event.target.name]: event.target.value});
+    };
     return ( 
   <>
   <FormContainer>
@@ -43,7 +58,7 @@ function Register() {
             onChange={(e) => handleChange(e)}
             />
             <button type="submit" >Create User</button>
-            <span> already have an account ? <Link to="/login">Login</Link>
+            <span> Already have an account ? <Link to="/login">Login</Link>
             </span>
             </form>
     </FormContainer> 
@@ -83,9 +98,40 @@ const FormContainer = styled.div`
     input{
         background-color: transparent;
         padding: 1rem;
-        border: 0.1 rem solid #4e0eff;
+        border: 0.1rem solid #4e0eff;
         border-radius: 0.4rem;
-        
+        color: white;
+        width: 100%;
+        font-size: 1rem;
+        &:focus{
+            border: #0.1rem solid #997af0;
+            outline: none;
+        }
+    }
+    button{
+        background-color: #997af0;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        transition: 0.5s ease-in-out;
+        &:hover
+        {
+            background-color: #4e0eff;
+        }
+    }
+    span{
+        color: white;
+        text-transform: uppercase;
+        a{
+            color: #4e0eff;
+            text-decoration: none;
+            font-weight: bold;
+        }
     }
  }
  `;  
