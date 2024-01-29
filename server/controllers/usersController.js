@@ -1,21 +1,32 @@
 const User = require("../model/userModel");
-const brcypt = require("bcrypt");
 
 module.exports.login = async (req, res, next) => {
     try {
-      const { username, password } = req.body;
-      const user = await User.findOne({ username });
-      if (!user)
-        return res.json({ msg: "Incorrect Username or Password", status: false });
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid)
-        return res.json({ msg: "Incorrect Username or Password", status: false });
-      delete user.password;
-      return res.json({ status: true, user });
+        const { username, password } = req.body;
+        console.log("Received login request:", { username, password });
+
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            console.log("User not found");
+            return res.status(401).json({ msg: "Incorrect Username or Password", status: false });
+        }
+
+        // Compare the entered plain text password with the password in the database
+        if (password !== user.password) {
+            console.log("Invalid password");
+            return res.status(401).json({ msg: "Incorrect Username or Password", status: false });
+        }
+
+        console.log("Login successful");
+        return res.json({ status: true, user });
     } catch (ex) {
-      next(ex);
+        console.error("Error during login:", ex);
+        next(ex);
     }
-  };
+};
+
+
 
 module.exports.register = async (req,res,next) => {
     try{
